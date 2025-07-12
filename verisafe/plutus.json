@@ -1,0 +1,143 @@
+{
+  "preamble": {
+    "title": "noonesdev/verisafe",
+    "description": "Aiken contracts for project 'noonesdev/verisafe'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.17+c3a7fba"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "verisafe.verisafe.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/verisafe~1BiometricData"
+        }
+      },
+      "redeemer": {
+        "title": "redeemer",
+        "schema": {
+          "$ref": "#/definitions/verisafe~1Redeemer"
+        }
+      },
+      "compiledCode": "59022e01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466446644b30013003300d3754013132323259800980a00144c8c966002601000315980098099baa002803c590144566002601800315980098099baa002803c59014456600266e1d2004001899192cc004c06000a0131640586eb8c058004c04cdd50014590112022404460226ea8004c04c00e2c8090dd71809000980900098071baa0098b2018159800980098059baa0028cc004c030dd5180718061baa0029180798081808180818081808180818081808000c88c8cc00400400c896600200314a115980099b8f375c602400200714a313300200230130014038808a601c60186ea801e4601e602000291111194c004cc010dd6180298091baa00a375c602800330113754007375c602800c9112cc004c02800a2b3001003899b8f375c600a602a6ea80412210a73746f72655f64617461008a50404d15980098070014566002b30010038a518992cc004c02cc054dd5000c4cc020dd61804980b1baa00e375c6030602c6ea80062941014180b980c0022026899b8f375c600a602a6ea804122010d72657472696576655f64617461008a50404d1325980080244cdc79bae30063016375402291010a73686172655f64617461008a5040506eb8c05cc054dd50032026404c301400545900a1807001980618068009b8748000c024dd5001c590070c01c004c00cdd5003c52689b2b20021",
+      "hash": "67bfe27f6d67717f1605e7a93b2df39202b2aed95ae796c40a4c83e5"
+    },
+    {
+      "title": "verisafe.verisafe.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59022e01010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cdc3a400530070024888966002600460106ea800e26466446644b30013003300d3754013132323259800980a00144c8c966002601000315980098099baa002803c590144566002601800315980098099baa002803c59014456600266e1d2004001899192cc004c06000a0131640586eb8c058004c04cdd50014590112022404460226ea8004c04c00e2c8090dd71809000980900098071baa0098b2018159800980098059baa0028cc004c030dd5180718061baa0029180798081808180818081808180818081808000c88c8cc00400400c896600200314a115980099b8f375c602400200714a313300200230130014038808a601c60186ea801e4601e602000291111194c004cc010dd6180298091baa00a375c602800330113754007375c602800c9112cc004c02800a2b3001003899b8f375c600a602a6ea80412210a73746f72655f64617461008a50404d15980098070014566002b30010038a518992cc004c02cc054dd5000c4cc020dd61804980b1baa00e375c6030602c6ea80062941014180b980c0022026899b8f375c600a602a6ea804122010d72657472696576655f64617461008a50404d1325980080244cdc79bae30063016375402291010a73686172655f64617461008a5040506eb8c05cc054dd50032026404c301400545900a1807001980618068009b8748000c024dd5001c590070c01c004c00cdd5003c52689b2b20021",
+      "hash": "67bfe27f6d67717f1605e7a93b2df39202b2aed95ae796c40a4c83e5"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Option$aiken/crypto/VerificationKeyHash": {
+      "title": "Option",
+      "anyOf": [
+        {
+          "title": "Some",
+          "description": "An optional value.",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            }
+          ]
+        },
+        {
+          "title": "None",
+          "description": "Nothing.",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    },
+    "aiken/crypto/VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "verisafe/Action": {
+      "title": "Action",
+      "anyOf": [
+        {
+          "title": "Store",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Retrieve",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        },
+        {
+          "title": "Share",
+          "dataType": "constructor",
+          "index": 2,
+          "fields": [
+            {
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            }
+          ]
+        }
+      ]
+    },
+    "verisafe/BiometricData": {
+      "title": "BiometricData",
+      "anyOf": [
+        {
+          "title": "BiometricData",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "data_hash",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "owner",
+              "$ref": "#/definitions/aiken~1crypto~1VerificationKeyHash"
+            },
+            {
+              "title": "shared_with",
+              "$ref": "#/definitions/Option$aiken~1crypto~1VerificationKeyHash"
+            }
+          ]
+        }
+      ]
+    },
+    "verisafe/Redeemer": {
+      "title": "Redeemer",
+      "anyOf": [
+        {
+          "title": "Redeemer",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "action",
+              "$ref": "#/definitions/verisafe~1Action"
+            },
+            {
+              "title": "msg",
+              "$ref": "#/definitions/ByteArray"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
