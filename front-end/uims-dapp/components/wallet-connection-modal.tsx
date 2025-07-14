@@ -33,7 +33,6 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
       const isWalletInstalled = window.cardano && window.cardano[walletKey]
 
       if (isWalletInstalled) {
-        // Try to connect to the wallet
         await window.cardano[walletKey].enable()
         setIsConnected(true)
         if (onSuccess) {
