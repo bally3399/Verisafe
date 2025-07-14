@@ -1,9 +1,10 @@
 "use client"
+
+import { useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Wallet, Loader2, AlertCircle, CheckCircle, ExternalLink } from "lucide-react"
-import { useWallet } from "@/hooks/useWallet"
 
 interface WalletConnectionModalProps {
   isOpen: boolean
@@ -12,17 +13,50 @@ interface WalletConnectionModalProps {
 }
 
 export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: WalletConnectionModalProps) {
-  const { connectWallet, isConnecting, error, isConnected } = useWallet()
+  const [selectedWallet, setSelectedWallet] = useState<string | null>(null)
+  const [isConnecting, setIsConnecting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isConnected, setIsConnected] = useState(false)
 
   const handleConnect = async () => {
+    if (!selectedWallet) {
+      setError("Please select a wallet first")
+      return
+    }
+
+    setIsConnecting(true)
+    setError(null)
+
     try {
-      await connectWallet()
-      if (onSuccess) {
-        onSuccess()
+      // Check if wallet is installed
+      const walletKey = selectedWallet.toLowerCase()
+      const isWalletInstalled = window.cardano && window.cardano[walletKey]
+
+      if (isWalletInstalled) {
+        // Try to connect to the wallet
+        await window.cardano[walletKey].enable()
+        setIsConnected(true)
+        if (onSuccess) {
+          onSuccess()
+        }
+        setTimeout(() => {
+          onClose()
+        }, 1500)
+      } else {
+        // Wallet not installed, redirect to download page
+        const wallet = walletOptions.find((w) => w.name === selectedWallet)
+        if (wallet) {
+          window.open(wallet.url, "_blank")
+        }
       }
-      onClose()
     } catch (err) {
-      // Error is handled by the wallet hook
+      // If connection fails, redirect to wallet URL
+      const wallet = walletOptions.find((w) => w.name === selectedWallet)
+      if (wallet) {
+        window.open(wallet.url, "_blank")
+      }
+    } finally {
+      setIsConnecting(false)
     }
   }
 
@@ -65,7 +99,6 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
             Connect your Cardano wallet to securely manage your identity credentials
           </DialogDescription>
         </DialogHeader>
-
         <div className="space-y-4">
           {error && (
             <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3 flex items-center">
@@ -73,11 +106,10 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
               <span className="text-red-300 text-sm">{error}</span>
             </div>
           )}
-
           {isConnected ? (
             <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-3 flex items-center">
               <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-              <span className="text-green-300 text-sm">Wallet connected successfully!</span>
+              <span className="text-green-300 text-sm">{selectedWallet} wallet connected successfully!</span>
             </div>
           ) : (
             <>
@@ -87,7 +119,10 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
                   {walletOptions.map((wallet) => (
                     <Card
                       key={wallet.name}
-                      className="bg-slate-700/50 border-slate-600 hover:border-cyan-500/50 transition-colors cursor-pointer"
+                      className={`bg-slate-700/50 border-slate-600 hover:border-cyan-500/50 transition-colors cursor-pointer ${
+                        selectedWallet === wallet.name ? "border-cyan-500 bg-cyan-500/10" : ""
+                      }`}
+                      onClick={() => setSelectedWallet(wallet.name)}
                     >
                       <CardContent className="p-3 text-center">
                         <div className="text-2xl mb-1">{wallet.icon}</div>
@@ -98,12 +133,11 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
                   ))}
                 </div>
               </div>
-
               <div className="text-center">
                 <Button
                   onClick={handleConnect}
-                  disabled={isConnecting}
-                  className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600"
+                  disabled={isConnecting || !selectedWallet}
+                  className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 disabled:opacity-50"
                 >
                   {isConnecting ? (
                     <>
@@ -113,12 +147,11 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
                   ) : (
                     <>
                       <Wallet className="h-4 w-4 mr-2" />
-                      Connect Wallet
+                      {selectedWallet ? `Connect ${selectedWallet}` : "Select a Wallet"}
                     </>
                   )}
                 </Button>
               </div>
-
               <div className="text-center">
                 <p className="text-slate-400 text-sm mb-2">Don't have a Cardano wallet?</p>
                 <div className="flex justify-center space-x-2">
