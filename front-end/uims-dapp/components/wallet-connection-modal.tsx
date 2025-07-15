@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Wallet, Loader2, AlertCircle, CheckCircle, ExternalLink } from "lucide-react"
+import { useWallet } from "@/hooks/useWallet"
 
 interface WalletConnectionModalProps {
   isOpen: boolean
@@ -13,43 +14,40 @@ interface WalletConnectionModalProps {
 }
 
 export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: WalletConnectionModalProps) {
+  const { isConnected, connectWallet, error, setError, walletName: connectedWalletName } = useWallet()
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null)
   const [isConnecting, setIsConnecting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [isConnected, setIsConnected] = useState(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      setSelectedWallet(null)
+      setIsConnecting(false)
+      setError(null)
+    }
+  }, [isOpen, setError])
+
+  useEffect(() => {
+    if (isOpen && isConnected && !isConnecting) {
+      if (onSuccess) {
+        onSuccess()
+      }
+      setTimeout(() => {
+        onClose()
+      }, 1500)
+    }
+  }, [isOpen, isConnected, isConnecting, onSuccess, onClose])
 
   const handleConnect = async () => {
     if (!selectedWallet) {
       setError("Please select a wallet first")
       return
     }
-
     setIsConnecting(true)
     setError(null)
 
     try {
-      // Check if wallet is installed
-      const walletKey = selectedWallet.toLowerCase()
-      const isWalletInstalled = window.cardano && window.cardano[walletKey]
-
-      if (isWalletInstalled) {
-        await window.cardano[walletKey].enable()
-        setIsConnected(true)
-        if (onSuccess) {
-          onSuccess()
-        }
-        setTimeout(() => {
-          onClose()
-        }, 1500)
-      } else {
-        // Wallet not installed, redirect to download page
-        const wallet = walletOptions.find((w) => w.name === selectedWallet)
-        if (wallet) {
-          window.open(wallet.url, "_blank")
-        }
-      }
+      await connectWallet(selectedWallet.toLowerCase(), selectedWallet)
     } catch (err) {
-      // If connection fails, redirect to wallet URL
       const wallet = walletOptions.find((w) => w.name === selectedWallet)
       if (wallet) {
         window.open(wallet.url, "_blank")
@@ -107,8 +105,8 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
           )}
           {isConnected ? (
             <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-3 flex items-center">
-              <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
-              <span className="text-green-300 text-sm">{selectedWallet} wallet connected successfully!</span>
+              <CheckCircle className="h-4 w-4 mr-2" />
+              <span className="text-green-300 text-sm">{connectedWalletName} wallet connected successfully!</span>
             </div>
           ) : (
             <>

@@ -1,147 +1,113 @@
 "use client"
 
-import type React from "react"
+import { useState, createContext, useContext, type ReactNode } from "react"
 
-import { useState, useEffect, createContext, useContext } from "react"
-
-interface WalletState {
+type WalletContextType = {
   isConnected: boolean
   address: string | null
   balance: string | null
   walletName: string | null
-}
-
-interface WalletContextType extends WalletState {
-  connectWallet: () => Promise<void>
-  disconnectWallet: () => void
-  isConnecting: boolean
   error: string | null
+  connectWallet: (walletKey: string, name: string) => Promise<void>
+  disconnectWallet: () => void
+  setError: (message: string | null) => void
 }
 
-const WalletContext = createContext<WalletContextType | null>(null)
+const WalletContext = createContext<WalletContextType | undefined>(undefined)
 
-export function useWallet() {
-  const context = useContext(WalletContext)
-  if (!context) {
-    throw new Error("useWallet must be used within a WalletProvider")
+declare global {
+  interface Window {
+    cardano: any
   }
-  return context
 }
 
-export function WalletProvider({ children }: { children: React.ReactNode }) {
-  const [walletState, setWalletState] = useState<WalletState>({
-    isConnected: false,
-    address: null,
-    balance: null,
-    walletName: null,
-  })
-  const [isConnecting, setIsConnecting] = useState(false)
+export function WalletProvider({ children }: { children: ReactNode }) {
+  const [isConnected, setIsConnected] = useState(false)
+  const [address, setAddress] = useState<string | null>(null)
+  const [balance, setBalance] = useState<string | null>(null)
+  const [walletName, setWalletName] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // Check for existing wallet connection on mount
-  useEffect(() => {
-    checkWalletConnection()
-  }, [])
-
-  const checkWalletConnection = async () => {
+  const fetchWalletData = async (api: any, name: string) => {
     try {
-      // Check if cardano object exists (injected by wallet extensions)
-      if (typeof window !== "undefined" && (window as any).cardano) {
-        const savedWallet = localStorage.getItem("connectedWallet")
-        if (savedWallet) {
-          const walletApi = (window as any).cardano[savedWallet]
-          if (walletApi && (await walletApi.isEnabled())) {
-            const api = await walletApi.enable()
-            const addresses = await api.getUsedAddresses()
-            const balance = await api.getBalance()
+      const usedAddresses = await api.getUsedAddresses()
+      const walletBalance = await api.getBalance() // This might return BigNum or similar, needs conversion
 
-            setWalletState({
-              isConnected: true,
-              address: addresses[0] || "addr1...",
-              balance: "1,234.56 ₳",
-              walletName: savedWallet,
-            })
-          }
-        }
-      }
-    } catch (err) {
-      console.error("Error checking wallet connection:", err)
+      setIsConnected(true)
+      setWalletName(name)
+      setAddress(usedAddresses[0] || "N/A")
+      // Assuming walletBalance is a BigInt or similar, convert to string for display
+      setBalance(walletBalance.toString() + " ADA" || "0 ADA")
+      setError(null) // Clear any previous errors
+      console.log(`Successfully fetched data for ${name} wallet.`)
+    } catch (dataFetchError: any) {
+      console.error("Failed to fetch wallet data:", dataFetchError)
+      setError(`Failed to fetch wallet data: ${dataFetchError.message || dataFetchError}`)
+      setIsConnected(false)
+      setAddress(null)
+      setBalance(null)
+      setWalletName(null)
     }
   }
 
-  const connectWallet = async () => {
-    setIsConnecting(true)
+  const connectWallet = async (walletKey: string, name: string) => {
     setError(null)
-
     try {
-      // Simulate wallet connection for demo purposes
-      // In a real app, this would interact with actual Cardano wallet APIs
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      // Check if wallet extensions are available
-      if (typeof window !== "undefined" && (window as any).cardano) {
-        // Try to connect to available wallets (Nami, Eternl, etc.)
-        const availableWallets = Object.keys((window as any).cardano)
-
-        if (availableWallets.length > 0) {
-          const walletName = availableWallets[0] // Use first available wallet
-          const walletApi = (window as any).cardano[walletName]
-
-          // Request access
-          const api = await walletApi.enable()
-          const addresses = await api.getUsedAddresses()
-          const balance = await api.getBalance()
-
-          setWalletState({
-            isConnected: true,
-            address: addresses[0] || "addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt6ll2qzqz...",
-            balance: "1,234.56 ₳",
-            walletName: walletName,
-          })
-
-          localStorage.setItem("connectedWallet", walletName)
-        } else {
-          throw new Error("No Cardano wallet found. Please install Nami, Eternl, or another Cardano wallet.")
-        }
-      } else {
-        // Demo mode - simulate successful connection
-        setWalletState({
-          isConnected: true,
-          address: "addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt6ll2qzqz...",
-          balance: "1,234.56 ₳",
-          walletName: "Demo Wallet",
-        })
-        localStorage.setItem("connectedWallet", "demo")
+      if (!window.cardano || !window.cardano[walletKey]) {
+        throw new Error(`Wallet ${name} not found. Please install it.`)
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to connect wallet")
-    } finally {
-      setIsConnecting(false)
+
+      let api
+      try {
+        api = await window.cardano[walletKey].enable()
+      } catch (enableError: any) {
+        // Specific handling for "account changed" or similar errors
+        if (enableError.message && enableError.message.includes("account changed")) {
+          console.warn("Wallet already enabled but account changed. Attempting to re-fetch data.")
+          // If 'enable' throws 'account changed', it means the wallet is already connected
+          // and the API object should be accessible directly.
+          api = window.cardano[walletKey] // Get the API directly
+          if (!api) {
+            throw new Error(`Could not get wallet API after 'account changed' error for ${name}.`)
+          }
+        } else {
+          throw enableError // Re-throw other errors
+        }
+      }
+
+      await fetchWalletData(api, name)
+    } catch (err: any) {
+      console.error("Failed to connect wallet:", err)
+      setError(err.message || "Failed to connect wallet. Please try again.")
+      setIsConnected(false)
+      setAddress(null)
+      setBalance(null)
+      setWalletName(null)
     }
   }
 
   const disconnectWallet = () => {
-    setWalletState({
-      isConnected: false,
-      address: null,
-      balance: null,
-      walletName: null,
-    })
-    localStorage.removeItem("connectedWallet")
+    console.log("Disconnecting wallet...")
+    setIsConnected(false)
+    setAddress(null)
+    setBalance(null)
+    setWalletName(null)
     setError(null)
   }
 
   return (
     <WalletContext.Provider
-      value={{
-        ...walletState,
-        connectWallet,
-        disconnectWallet,
-        isConnecting,
-        error,
-      }}
+      value={{ isConnected, address, balance, walletName, error, connectWallet, disconnectWallet, setError }}
     >
       {children}
     </WalletContext.Provider>
   )
+}
+
+export function useWallet() {
+  const context = useContext(WalletContext)
+  if (context === undefined) {
+    throw new Error("useWallet must be used within a WalletProvider")
+  }
+  return context
 }
