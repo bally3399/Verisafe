@@ -353,7 +353,6 @@
 //   )
 // }
 
-
 "use client"
 
 import { useState, useEffect } from "react"
@@ -370,7 +369,14 @@ interface WalletConnectionModalProps {
 }
 
 export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: WalletConnectionModalProps) {
-  const { isConnected, connectWallet, error, setError, walletName: connectedWalletName } = useWallet()
+  const {
+    isConnected,
+    connectWallet,
+    error,
+    setError,
+    walletName: connectedWalletName,
+    setSimulatedConnectionStatus,
+  } = useWallet()
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null)
   const [isConnecting, setIsConnecting] = useState(false)
 
@@ -402,6 +408,24 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
     setIsConnecting(true)
     setError(null) // Clear error before new connection attempt
 
+    // Check if window.cardano and the specific wallet are available (i.e., not in v0 preview)
+    const isWalletAvailableInBrowser =
+      typeof window !== "undefined" && window.cardano && window.cardano[selectedWallet.toLowerCase()]
+
+    if (!isWalletAvailableInBrowser) {
+      // Simulate connection success for the v0 preview environment
+      console.log("Simulating wallet connection for preview environment...")
+      setSimulatedConnectionStatus(true, selectedWallet)
+      setTimeout(() => {
+        if (onSuccess) {
+          onSuccess()
+        }
+        setIsConnecting(false) // End connecting state after simulation
+      }, 1500) // Simulate a short delay for connection
+      return
+    }
+
+    // Actual wallet connection logic for local environment
     try {
       await connectWallet(selectedWallet.toLowerCase(), selectedWallet)
     } catch (err) {
@@ -478,9 +502,7 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
                   {walletOptions.map((wallet) => (
                     <Card
                       key={wallet.name}
-                      className={`bg-slate-700/50 border-slate-600 hover:border-cyan-500/50 transition-colors cursor-pointer ${
-                        selectedWallet === wallet.name ? "border-cyan-500 bg-cyan-500/10" : ""
-                      }`}
+                      className={`bg-slate-700/50 border-slate-600 hover:border-cyan-500/50 transition-colors cursor-pointer ${selectedWallet === wallet.name ? "border-cyan-500 bg-cyan-500/10" : ""}`}
                       onClick={() => setSelectedWallet(wallet.name)}
                     >
                       <CardContent className="p-3 text-center">

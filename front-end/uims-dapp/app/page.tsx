@@ -753,7 +753,7 @@ function VerisafeDashboardContent() {
   const [currentScreen, setCurrentScreen] = useState("dashboard")
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [userCredentials, setUserCredentials] = useState<Credential>([])
+  const [userCredentials, setUserCredentials] = useState<Credential[]>([])
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [walletRequiredMessage, setWalletRequiredMessage] = useState("")
   const [intendedScreen, setIntendedScreen] = useState<string | null>(null) // New state for intended screen
@@ -811,7 +811,13 @@ function VerisafeDashboardContent() {
           />
         )
       case "credential-creation":
-        return <CredentialCreationScreen onBack={() => setCurrentScreen("dashboard")} credentials={userCredentials} />
+        return (
+          <CredentialCreationScreen
+            onBack={() => setCurrentScreen("dashboard")}
+            credentials={userCredentials}
+            onCredentialCreated={handleEnrollmentComplete}
+          />
+        )
       case "authentication":
         return (
           <AuthenticationScreen
@@ -1472,3 +1478,4 @@ export default function VerisafeDashboard() {
     </WalletProvider>
   )
 }
+
