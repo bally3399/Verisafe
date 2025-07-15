@@ -23,7 +23,10 @@ import AuthenticationScreen from "@/components/authentication-screen"
 import CredentialSharingScreen from "@/components/credential-sharing-screen"
 import RevocationScreen from "@/components/revocation-screen"
 import QAScreen from "@/components/qa-screen"
-import CredentialCreationScreen from "@/components/credential-creation-screen"
+// CredentialCreationScreen was provided with the same content as CredentialSharingScreen,
+// so I'm using a placeholder for it to avoid duplication and potential issues.
+// You might want to provide a distinct implementation for CredentialCreationScreen.
+// import CredentialCreationScreen from "@/components/credential-creation-screen"
 import WalletConnectionModal from "@/components/wallet-connection-modal"
 import WalletDropdown from "@/components/wallet-dropdown"
 import { Badge } from "@/components/ui/badge"
@@ -46,7 +49,6 @@ function VerisafeDashboardContent() {
   const [userCredentials, setUserCredentials] = useState<Credential[]>([])
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [walletRequiredMessage, setWalletRequiredMessage] = useState("")
-
   const { isConnected } = useWallet()
 
   // Function to add new credential when enrollment is completed
@@ -72,9 +74,11 @@ function VerisafeDashboardContent() {
       setWalletRequiredMessage(
         "A Cardano wallet connection is required to create your identity. Please connect your wallet to continue.",
       )
-      setCurrentScreen("dashboard")
+      // Do not change screen here, let the modal handle the prompt
       return
     }
+    // If wallet is connected, proceed to enrollment screen
+    setCurrentScreen("enrollment")
   }
 
   const renderScreen = () => {
@@ -84,16 +88,21 @@ function VerisafeDashboardContent() {
           <EnrollmentScreen
             onBack={() => setCurrentScreen("dashboard")}
             onComplete={handleEnrollmentComplete}
-            onWalletRequired={handleEnrollmentAttempt}
+            onWalletRequired={handleEnrollmentAttempt} // This will trigger the modal if wallet is disconnected
           />
         )
       case "credential-creation":
+        // Placeholder for CredentialCreationScreen as its content was identical to CredentialSharingScreen
         return (
-          <CredentialCreationScreen
-            onBack={() => setCurrentScreen("dashboard")}
-            onComplete={handleEnrollmentComplete}
-            onWalletRequired={handleEnrollmentAttempt}
-          />
+          <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white p-4">
+            <h2 className="text-3xl font-bold mb-4">Credential Creation Screen (Placeholder)</h2>
+            <p className="text-slate-400 text-center mb-6">
+              This is a placeholder for the Credential Creation Screen.
+              <br />
+              Wallet connection status: {isConnected ? "Connected" : "Disconnected"}
+            </p>
+            <Button onClick={() => setCurrentScreen("dashboard")}>Back to Dashboard</Button>
+          </div>
         )
       case "authentication":
         return (
@@ -129,7 +138,6 @@ function VerisafeDashboardContent() {
                   }}
                 />
               </div>
-
               {/* Floating Network Nodes */}
               <div className="absolute top-20 left-20 w-4 h-4 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50">
                 <div className="absolute inset-0 bg-cyan-400 rounded-full animate-ping opacity-75"></div>
@@ -140,7 +148,6 @@ function VerisafeDashboardContent() {
               <div className="absolute bottom-32 left-40 w-3 h-3 bg-emerald-400 rounded-full shadow-lg shadow-emerald-400/50">
                 <div className="absolute inset-0 bg-emerald-400 rounded-full animate-ping opacity-75 delay-2000"></div>
               </div>
-
               {/* Glowing Connection Lines */}
               <svg className="absolute inset-0 w-full h-full opacity-25">
                 <defs>
@@ -154,13 +161,11 @@ function VerisafeDashboardContent() {
                   <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite" />
                 </path>
               </svg>
-
               {/* Scanning Lines Effect */}
               <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-30 animate-scan"></div>
               </div>
             </div>
-
             <div className="relative z-10">
               {/* Responsive Navigation Bar */}
               <nav className="border-b border-slate-700/50 bg-slate-900/90 backdrop-blur-xl">
@@ -183,7 +188,6 @@ function VerisafeDashboardContent() {
                         </p>
                       </div>
                     </div>
-
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-4">
                       {isConnected ? (
@@ -200,7 +204,6 @@ function VerisafeDashboardContent() {
                         </Button>
                       )}
                     </div>
-
                     {/* Mobile Menu Button */}
                     <div className="md:hidden">
                       <Button
@@ -213,7 +216,6 @@ function VerisafeDashboardContent() {
                       </Button>
                     </div>
                   </div>
-
                   {/* Mobile Menu */}
                   {mobileMenuOpen && (
                     <div className="md:hidden mt-4 pb-4 border-t border-slate-700/50 pt-4">
@@ -269,7 +271,6 @@ function VerisafeDashboardContent() {
                   )}
                 </div>
               </nav>
-
               {/* Wallet Required Message */}
               {walletRequiredMessage && (
                 <div className="bg-amber-900/20 border-b border-amber-500/30 px-4 py-3">
@@ -291,7 +292,6 @@ function VerisafeDashboardContent() {
                   </div>
                 </div>
               )}
-
               <div className="container mx-auto px-4 sm:px-6 py-8">
                 {/* Hero Section */}
                 <div className="relative mb-20">
@@ -311,7 +311,6 @@ function VerisafeDashboardContent() {
                         <div className="w-2 h-2 bg-emerald-400 rounded-full animate-ping delay-400"></div>
                       </div>
                     </div>
-
                     <div className="relative mb-8">
                       <h1
                         className="text-6xl sm:text-7xl md:text-8xl font-light mb-4 leading-tight tracking-wide"
@@ -329,7 +328,6 @@ function VerisafeDashboardContent() {
                       </h1>
                       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full animate-pulse shadow-lg shadow-cyan-500/50"></div>
                     </div>
-
                     <div className="max-w-5xl mx-auto mb-12 animate-fade-in-up delay-700">
                       <p className="text-xl sm:text-2xl md:text-3xl text-slate-300 leading-relaxed font-light mb-6">
                         The world's first <span className="text-cyan-400 font-semibold">zero-knowledge</span> identity
@@ -340,7 +338,6 @@ function VerisafeDashboardContent() {
                         sovereignty with military-grade encryption and GDPR compliance.
                       </p>
                     </div>
-
                     <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-16 animate-fade-in-up delay-1000">
                       <Button
                         onClick={() => handleNavigateWithWalletCheck("enrollment", true)}
@@ -353,7 +350,6 @@ function VerisafeDashboardContent() {
                           <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 ml-3 group-hover:translate-x-2 transition-transform duration-300" />
                         </div>
                       </Button>
-
                       <Button
                         onClick={() => handleNavigateWithWalletCheck("authentication")}
                         variant="outline"
@@ -364,7 +360,6 @@ function VerisafeDashboardContent() {
                       </Button>
                     </div>
                   </div>
-
                   {/* Updated Navigation Cards */}
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-16 sm:mb-20">
                     {/* Create New Identity */}
@@ -385,7 +380,6 @@ function VerisafeDashboardContent() {
                         </div>
                       </CardContent>
                     </Card>
-
                     {/* Create Credentials */}
                     <Card
                       className="group bg-gradient-to-br from-slate-800/60 to-sky-900/40 border-slate-600 hover:border-sky-400/60 transition-all duration-500 cursor-pointer hover:scale-105 backdrop-blur-sm shadow-2xl hover:shadow-sky-400/30"
@@ -404,7 +398,6 @@ function VerisafeDashboardContent() {
                         </div>
                       </CardContent>
                     </Card>
-
                     {/* Share Credentials */}
                     <Card
                       className="group bg-gradient-to-br from-slate-800/60 to-sky-900/40 border-slate-600 hover:border-sky-400/60 transition-all duration-500 cursor-pointer hover:scale-105 backdrop-blur-sm shadow-2xl hover:shadow-sky-400/30"
@@ -423,7 +416,6 @@ function VerisafeDashboardContent() {
                         </div>
                       </CardContent>
                     </Card>
-
                     {/* Authenticate */}
                     <Card
                       className="group bg-gradient-to-br from-slate-800/60 to-sky-900/40 border-slate-600 hover:border-sky-400/60 transition-all duration-500 cursor-pointer hover:scale-105 backdrop-blur-sm shadow-2xl hover:shadow-sky-400/30"
@@ -443,7 +435,6 @@ function VerisafeDashboardContent() {
                       </CardContent>
                     </Card>
                   </div>
-
                   {/* Live Statistics Dashboard */}
                   <div className="bg-gradient-to-r from-slate-800/40 to-slate-700/40 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-600/50 shadow-2xl mb-16 sm:mb-20">
                     <div className="text-center mb-8">
@@ -452,7 +443,6 @@ function VerisafeDashboardContent() {
                       </h3>
                       <p className="text-slate-400">Real-time network metrics</p>
                     </div>
-
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
                       <div className="text-center group cursor-pointer">
                         <div className="text-3xl sm:text-5xl font-black text-cyan-400 mb-2 group-hover:scale-110 transition-transform duration-300">
@@ -466,7 +456,6 @@ function VerisafeDashboardContent() {
                           +12% this week
                         </div>
                       </div>
-
                       <div className="text-center group cursor-pointer">
                         <div className="text-3xl sm:text-5xl font-black text-teal-400 mb-2 group-hover:scale-110 transition-transform duration-300">
                           <span className="animate-count-up">99.9%</span>
@@ -477,7 +466,6 @@ function VerisafeDashboardContent() {
                           24/7 Available
                         </div>
                       </div>
-
                       <div className="text-center group cursor-pointer">
                         <div className="text-3xl sm:text-5xl font-black text-emerald-400 mb-2 group-hover:scale-110 transition-transform duration-300">
                           <span className="animate-count-up">847K</span>
@@ -488,7 +476,6 @@ function VerisafeDashboardContent() {
                           Real-time
                         </div>
                       </div>
-
                       <div className="text-center group cursor-pointer">
                         <div className="text-3xl sm:text-5xl font-black text-slate-300 mb-2 group-hover:scale-110 transition-transform duration-300">
                           <span className="animate-count-up">₳0.17</span>
@@ -502,7 +489,6 @@ function VerisafeDashboardContent() {
                     </div>
                   </div>
                 </div>
-
                 {/* Dashboard Content - Show user credentials */}
                 <div className="grid lg:grid-cols-3 gap-8 mb-20">
                   {/* User Credentials Overview */}
@@ -579,7 +565,6 @@ function VerisafeDashboardContent() {
                       </CardContent>
                     </Card>
                   </div>
-
                   {/* Quick Actions */}
                   <div className="space-y-6">
                     <Card className="bg-slate-800/60 border-slate-600 backdrop-blur-sm shadow-2xl">
@@ -630,7 +615,6 @@ function VerisafeDashboardContent() {
                         </Button>
                       </CardContent>
                     </Card>
-
                     {/* Status Card */}
                     <Card className="bg-slate-800/60 border-slate-600 backdrop-blur-sm shadow-2xl">
                       <CardHeader>
@@ -677,43 +661,29 @@ function VerisafeDashboardContent() {
                 </div>
               </div>
             </div>
-
             {/* Custom CSS for additional animations */}
-            <style jsx>{`
-@keyframes float {
+            <style jsx>{`@keyframes float {
   0%   { transform: translateY(0); }
   50%  { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
+  100% { transform: translateY(0); }}
 @keyframes scan {
   0%   { top: 0%;   opacity: 0; }
   50%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
+  100% { top: 100%; opacity: 0; }}
 @keyframes gradient-x {
   0%   { background-size: 200% 200%; background-position: left center; }
   50%  { background-size: 200% 200%; background-position: right center; }
-  100% { background-size: 200% 200%; background-position: left center; }
-}
+  100% { background-size: 200% 200%; background-position: left center; }}
 @keyframes fade-in-up {
   0%   { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
+  100% { opacity: 1; transform: translateY(0); }}
 @keyframes count-up {
   0%   { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-.animate-float        { animation: float 6s ease-in-out infinite; }
-.animate-scan         { animation: scan 3s linear infinite; }
-.animate-gradient-x   { animation: gradient-x 4s ease infinite; }
-.animate-fade-in-up   { animation: fade-in-up 1s ease-out; }
-.animate-count-up     { animation: count-up 1s ease-out; }
-`}</style>
+  100% { opacity: 1; transform: translateY(0); }}.animate-float        { animation: float 6s ease-in-out infinite; }.animate-scan         { animation: scan 3s linear infinite; }.animate-gradient-x   { animation: gradient-x 4s ease infinite; }.animate-fade-in-up   { animation: fade-in-up 1s ease-out; }.animate-count-up     { animation: count-up 1s ease-out; }`}</style>
           </div>
         )
     }
   }
-
   return (
     <>
       {renderScreen()}
@@ -725,6 +695,10 @@ function VerisafeDashboardContent() {
         }}
         onSuccess={() => {
           setWalletRequiredMessage("")
+          setShowWalletModal(false) // Close modal on success
+          // If a specific screen was intended, navigate to it after successful connection
+          // This logic would need to be more sophisticated if you want to resume specific actions
+          // For now, it just closes the modal.
         }}
       />
     </>

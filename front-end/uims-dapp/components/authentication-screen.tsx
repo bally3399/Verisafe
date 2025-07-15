@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -69,7 +68,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
             }}
           />
         </div>
-
         {/* Animated Network Nodes */}
         <div className="absolute top-20 left-20 w-4 h-4 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50">
           <div className="absolute inset-0 bg-cyan-400 rounded-full animate-ping opacity-75"></div>
@@ -80,7 +78,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
         <div className="absolute bottom-32 left-40 w-3 h-3 bg-emerald-400 rounded-full shadow-lg shadow-emerald-400/50">
           <div className="absolute inset-0 bg-emerald-400 rounded-full animate-ping opacity-75 delay-2000"></div>
         </div>
-
         {/* Glowing Connection Lines */}
         <svg className="absolute inset-0 w-full h-full opacity-25">
           <defs>
@@ -94,13 +91,11 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
             <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite" />
           </path>
         </svg>
-
         {/* Scanning Lines Effect */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-30 animate-scan"></div>
         </div>
       </div>
-
       <div className="relative z-10">
         {/* Header */}
         <nav className="border-b border-slate-700/50 bg-slate-900/90 backdrop-blur-xl">
@@ -121,7 +116,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
             </div>
           </div>
         </nav>
-
         <div className="container mx-auto px-6 py-8">
           {/* Status Badge */}
           <div className="flex justify-center mb-8">
@@ -130,7 +124,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
               Secure blockchain verification in progress
             </Badge>
           </div>
-
           <div className="max-w-lg mx-auto">
             <Card className="bg-slate-800/60 border-slate-600 backdrop-blur-sm shadow-2xl hover:shadow-teal-500/10 transition-all duration-500">
               <CardHeader className="text-center pb-6">
@@ -142,7 +135,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                   Verify your identity to access your credentials
                 </CardDescription>
               </CardHeader>
-
               <CardContent className="px-8 pb-8">
                 <Tabs value={authMethod} onValueChange={setAuthMethod} className="w-full">
                   <TabsList className="grid w-full grid-cols-2 bg-slate-700/50 p-1">
@@ -161,7 +153,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                       PIN
                     </TabsTrigger>
                   </TabsList>
-
                   <TabsContent value="biometric" className="space-y-8 mt-8">
                     <div className="text-center">
                       <div className="relative mx-auto w-48 h-48 bg-slate-700/50 rounded-full flex items-center justify-center mb-6 border-2 border-slate-600 group">
@@ -183,7 +174,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                           <AlertCircle className="h-24 w-24 text-red-400 animate-pulse" />
                         )}
                       </div>
-
                       {authResult === null && (
                         <>
                           {biometricStatus === "idle" && (
@@ -196,14 +186,12 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                           )}
                         </>
                       )}
-
                       {authResult === "success" && (
                         <div className="text-center animate-fade-in-up">
                           <p className="text-green-400 mb-2 font-semibold text-xl">Authentication Successful!</p>
                           <p className="text-slate-400">Redirecting to dashboard...</p>
                         </div>
                       )}
-
                       {authResult === "failure" && (
                         <div className="text-center animate-fade-in-up">
                           <p className="text-red-400 mb-2 font-semibold text-xl">Authentication Failed</p>
@@ -218,7 +206,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                         </div>
                       )}
                     </div>
-
                     {authResult === null && (
                       <Button
                         onClick={handleBiometricAuth}
@@ -239,7 +226,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                       </Button>
                     )}
                   </TabsContent>
-
                   <TabsContent value="pin" className="space-y-8 mt-8">
                     <div className="space-y-6">
                       <div>
@@ -268,7 +254,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                         </div>
                         <p className="text-slate-500 text-sm mt-2">Demo PIN: 123456</p>
                       </div>
-
                       {authResult === "success" && (
                         <div className="text-center text-green-400 animate-fade-in-up">
                           <CheckCircle className="h-12 w-12 mx-auto mb-4 animate-bounce" />
@@ -276,7 +261,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                           <p className="text-slate-400">Redirecting to dashboard...</p>
                         </div>
                       )}
-
                       {authResult === "failure" && (
                         <div className="text-center text-red-400 animate-fade-in-up">
                           <AlertCircle className="h-12 w-12 mx-auto mb-4 animate-pulse" />
@@ -291,7 +275,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                           </Button>
                         </div>
                       )}
-
                       {authResult === null && (
                         <Button
                           onClick={handlePinAuth}
@@ -316,7 +299,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
                 </Tabs>
               </CardContent>
             </Card>
-
             {/* Help Section */}
             <div className="mt-8 text-center animate-fade-in-up">
               <p className="text-slate-400">
@@ -329,27 +311,53 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
           </div>
         </div>
       </div>
-
       {/* Custom CSS for animations */}
       <style jsx>{`
-  @keyframes float {
-    0%   { transform: translateY(0); }
-    50%  { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
-  }
-  @keyframes scan {
-    0%   { top: 0%;   opacity: 0; }
-    50%  { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-  @keyframes fade-in-up {
-    0%   { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  .animate-float      { animation: float 6s ease-in-out infinite; }
-  .animate-scan       { animation: scan 3s linear infinite; }
-  .animate-fade-in-up { animation: fade-in-up 1s ease-out; }
-`}</style>
+        @keyframes float {
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+        @keyframes scan {
+          0% {
+            top: 0%;
+            opacity: 0;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            top: 100%;
+            opacity: 0;
+          }
+        }
+        @keyframes fade-in-up {
+          0% {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-scan {
+          animation: scan 3s linear infinite;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 1s ease-out;
+        }
+      `}</style>
     </div>
   )
 }
+  

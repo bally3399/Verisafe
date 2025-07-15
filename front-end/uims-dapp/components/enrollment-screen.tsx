@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { ArrowLeft, CheckCircle, Database, Fingerprint, Loader2, Shield, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -272,7 +271,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
   /* ─────────────────────── VALIDATION + HELPERS ─────────────────────── */
   const validateForm = () => {
     const errors: Record<string, string> = {}
-
     if (!formData.name.trim()) errors.name = "Full name is required"
     if (!formData.dob) errors.dob = "Date of birth is required"
     if (!formData.address.trim()) errors.address = "Address is required"
@@ -281,7 +279,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
     if (!formData.phoneNumber.trim()) errors.phoneNumber = "Phone number is required"
     if (!formData.nationality.trim()) errors.nationality = "Nationality is required"
     if (!formData.idNumber.trim()) errors.idNumber = "ID number is required"
-
     setFormErrors(errors)
     return Object.keys(errors).length === 0
   }
@@ -307,10 +304,8 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
       onWalletRequired()
       return
     }
-
     setProcessing(true)
     setWalrus("encrypting")
-
     setTimeout(() => setWalrus("uploading"), 1500)
     setTimeout(() => setWalrus("storing"), 3000)
     setTimeout(() => {
@@ -319,7 +314,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
       setWalrusId(newWalrusId)
       setProcessing(false)
       setStep(4)
-
       // Create new credential and pass it back to dashboard
       const newCredential: Credential = {
         id: `cred-${Date.now()}`,
@@ -339,7 +333,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
           biometricHash: "0x" + Math.random().toString(16).slice(2, 32),
         },
       }
-
       // Wait a moment then complete enrollment
       setTimeout(() => {
         onComplete(newCredential)
@@ -348,9 +341,7 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
   }
 
   /* ─────────────────────────── RENDER ─────────────────────────── */
-
   const progress = (step / 4) * 100
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-teal-900 relative">
       {/* ───────────── Decorative Background (same as landing) ───────────── */}
@@ -359,12 +350,11 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
           className="w-full h-full"
           style={{
             backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2306b6d4' fillOpacity='0.15'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z'/%3E%3C/g%3E%3C/svg%3E\")",
+              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2306b6d4' fillOpacity='0.15'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
             backgroundSize: "60px 60px",
           }}
         />
       </div>
-
       <div className="relative z-10">
         {/* ───────────────────────── NAVBAR ───────────────────────── */}
         <nav className="border-b border-slate-700/50 bg-slate-900/90 backdrop-blur">
@@ -383,7 +373,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
             </div>
           </div>
         </nav>
-
         {/* ────────────────────── PROGRESS BAR ────────────────────── */}
         <section className="container mx-auto px-6 py-10 max-w-2xl">
           <div className="flex justify-between text-sm text-slate-400 mb-2">
@@ -398,7 +387,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
             <span className={step >= 4 ? "text-green-400" : ""}>Done</span>
           </div>
         </section>
-
         {/* ────────────────────────── STEPS ───────────────────────── */}
         <div className="container mx-auto px-6 pb-20 max-w-3xl">
           {/* ──────────────── STEP 1 – BIODATA ──────────────── */}
@@ -410,7 +398,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                   Enter your biodata for secure Walrus storage. All fields are required for identity verification.
                 </CardDescription>
               </CardHeader>
-
               <CardContent className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
@@ -427,7 +414,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     />
                     {formErrors.name && <p className="text-red-400 text-sm mt-1">{formErrors.name}</p>}
                   </div>
-
                   <div>
                     <Label htmlFor="dob">Date of Birth *</Label>
                     <Input
@@ -443,7 +429,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     {formErrors.dob && <p className="text-red-400 text-sm mt-1">{formErrors.dob}</p>}
                   </div>
                 </div>
-
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="email">Email Address *</Label>
@@ -460,7 +445,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     />
                     {formErrors.email && <p className="text-red-400 text-sm mt-1">{formErrors.email}</p>}
                   </div>
-
                   <div>
                     <Label htmlFor="phoneNumber">Phone Number *</Label>
                     <div className="flex space-x-2">
@@ -500,7 +484,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     {formErrors.phoneNumber && <p className="text-red-400 text-sm mt-1">{formErrors.phoneNumber}</p>}
                   </div>
                 </div>
-
                 <div>
                   <Label htmlFor="address">Full Address *</Label>
                   <Input
@@ -515,7 +498,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                   />
                   {formErrors.address && <p className="text-red-400 text-sm mt-1">{formErrors.address}</p>}
                 </div>
-
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="nationality">Nationality *</Label>
@@ -545,7 +527,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     </Select>
                     {formErrors.nationality && <p className="text-red-400 text-sm mt-1">{formErrors.nationality}</p>}
                   </div>
-
                   <div>
                     <Label htmlFor="idNumber">Government ID Number *</Label>
                     <Input
@@ -561,7 +542,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     {formErrors.idNumber && <p className="text-red-400 text-sm mt-1">{formErrors.idNumber}</p>}
                   </div>
                 </div>
-
                 <Button
                   onClick={nextStep}
                   className="w-full bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-600 hover:to-teal-600 text-white py-5"
@@ -571,7 +551,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
               </CardContent>
             </Card>
           )}
-
           {/* ─────────────── STEP 2 – BIOMETRIC SCAN ─────────────── */}
           {step === 2 && (
             <Card className="bg-slate-800/60 border-slate-600 backdrop-blur">
@@ -579,7 +558,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                 <CardTitle className="text-slate-100">Biometric Capture</CardTitle>
                 <CardDescription className="text-slate-400">Secure fingerprint data encrypted locally.</CardDescription>
               </CardHeader>
-
               <CardContent className="space-y-8">
                 {/* Scanner */}
                 <div className="text-center">
@@ -594,7 +572,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     {biometric === "success" && <CheckCircle className="h-24 w-24 text-green-400" />}
                     {biometric === "error" && <AlertCircle className="h-24 w-24 text-red-400" />}
                   </div>
-
                   <p className="mt-4 text-slate-400">
                     {biometric === "idle" && "Touch the sensor to start the scan."}
                     {biometric === "scanning" && "Scanning... please hold still."}
@@ -602,7 +579,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     {biometric === "error" && "Scan failed, please try again."}
                   </p>
                 </div>
-
                 {/* Buttons */}
                 {biometric !== "success" ? (
                   <Button
@@ -630,7 +606,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
               </CardContent>
             </Card>
           )}
-
           {/* ─────────────── STEP 3 – CONSENT ─────────────── */}
           {step === 3 && (
             <Card className="bg-slate-800/60 border-slate-600 backdrop-blur">
@@ -638,7 +613,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                 <CardTitle className="text-slate-100">Privacy & Consent</CardTitle>
                 <CardDescription className="text-slate-400">GDPR-compliant data processing agreement.</CardDescription>
               </CardHeader>
-
               <CardContent className="space-y-6">
                 <div className="bg-slate-700/40 p-4 rounded-md border border-slate-600 text-sm leading-relaxed text-slate-300 space-y-2">
                   <p>
@@ -651,7 +625,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     • Your Cardano wallet will be used to sign transactions and maintain ownership of your credentials.
                   </p>
                 </div>
-
                 <div className="flex items-start space-x-3">
                   <input
                     id="consent"
@@ -665,7 +638,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                     confirm that I have a connected Cardano wallet for secure credential management.
                   </Label>
                 </div>
-
                 <Button
                   onClick={uploadWalrus}
                   disabled={!consent || processing}
@@ -683,7 +655,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
               </CardContent>
             </Card>
           )}
-
           {/* ─────────────── STEP 4 – SUCCESS ─────────────── */}
           {step === 4 && (
             <Card className="bg-slate-800/60 border-slate-600 backdrop-blur">
@@ -696,13 +667,11 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
                   Your decentralized identifier is stored on Walrus and secured by your Cardano wallet.
                 </CardDescription>
               </CardHeader>
-
               <CardContent className="space-y-4">
                 <div className="bg-slate-700/50 p-4 rounded-md border border-slate-600 text-sm">
                   <div className="text-slate-400">Walrus Object ID</div>
                   <code className="block break-all text-cyan-400">{walrusId}</code>
                 </div>
-
                 <div className="text-center">
                   <p className="text-slate-300 mb-4">Credential will be added to your dashboard automatically...</p>
                   <div className="flex justify-center">
@@ -712,7 +681,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
               </CardContent>
             </Card>
           )}
-
           {/* ─────────────── LIVE WALRUS STATUS ─────────────── */}
           {processing && (
             <Card className="mt-6 bg-slate-800/60 border-slate-600 backdrop-blur">
@@ -730,18 +698,34 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
         </div>
       </div>
       <style jsx>{`
-  @keyframes float {
-    0%   { transform: translateY(0); }
-    50%  { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
-  }
-  @keyframes fade-in-up {
-    0%   { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  .animate-float      { animation: float 6s ease-in-out infinite; }
-  .animate-fade-in-up { animation: fade-in-up 1s ease-out; }
-`}</style>
+        @keyframes float {
+          0% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+        @keyframes fade-in-up {
+          0% {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 1s ease-out;
+        }
+      `}</style>
     </div>
   )
 }

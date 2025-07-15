@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -95,12 +94,11 @@ export default function QAScreen({ onBack }: QAScreenProps) {
           className="w-full h-full"
           style={{
             backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2306b6d4' fillOpacity='0.15'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z'/%3E%3C/g%3E%3C/svg%3E\")",
+              "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2306b6d4' fillOpacity='0.15'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
             backgroundSize: "60px 60px",
           }}
         />
       </div>
-
       <div className="relative z-10">
         {/* Header */}
         <nav className="border-b border-slate-700/50 bg-slate-900/90 backdrop-blur">
@@ -119,7 +117,6 @@ export default function QAScreen({ onBack }: QAScreenProps) {
             </div>
           </div>
         </nav>
-
         <div className="container mx-auto px-6 py-8">
           {/* Hero Section */}
           <div className="text-center mb-12">
@@ -127,7 +124,6 @@ export default function QAScreen({ onBack }: QAScreenProps) {
             <p className="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
               Find answers to common questions about Verisafe, decentralized identity, and blockchain technology.
             </p>
-
             {/* Search Bar */}
             <div className="max-w-md mx-auto relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
@@ -139,7 +135,6 @@ export default function QAScreen({ onBack }: QAScreenProps) {
               />
             </div>
           </div>
-
           <div className="max-w-4xl mx-auto">
             {/* Category Filter */}
             <div className="flex flex-wrap gap-2 mb-8 justify-center">
@@ -166,7 +161,6 @@ export default function QAScreen({ onBack }: QAScreenProps) {
                 </Badge>
               ))}
             </div>
-
             {/* FAQ List */}
             <div className="space-y-4">
               {filteredFaqs.map((faq) => (
@@ -197,7 +191,6 @@ export default function QAScreen({ onBack }: QAScreenProps) {
                 </Card>
               ))}
             </div>
-
             {filteredFaqs.length === 0 && (
               <div className="text-center py-12">
                 <HelpCircle className="h-16 w-16 text-slate-600 mx-auto mb-4" />
@@ -205,7 +198,6 @@ export default function QAScreen({ onBack }: QAScreenProps) {
                 <p className="text-slate-400">Try adjusting your search terms or browse all categories.</p>
               </div>
             )}
-
             {/* Contact Section */}
             <Card className="bg-slate-800/60 border-slate-600 backdrop-blur-sm mt-12">
               <CardHeader>

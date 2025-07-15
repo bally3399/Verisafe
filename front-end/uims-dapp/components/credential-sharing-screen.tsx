@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -83,7 +82,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
       </div>
-
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center mb-8">
@@ -95,7 +93,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
             Share Credentials
           </h1>
         </div>
-
         {/* Privacy Badge */}
         <div className="flex justify-center mb-6">
           <div className="bg-sky-900/30 text-sky-400 border border-sky-500/30 px-4 py-2 rounded-full flex items-center">
@@ -103,7 +100,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
             Selective disclosure - You control what to share
           </div>
         </div>
-
         <div className="max-w-4xl mx-auto">
           {shareResult === "success" ? (
             <Card className="bg-slate-800/50 border-slate-700">
@@ -123,7 +119,7 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
                     Transaction Hash
                   </h3>
                   <div className="flex items-center space-x-2">
-                    <code className="text-green-400 text-sm break-all flex-1">{txHash}</code>
+                    <code className="text-green-400 text-sm break-all flex-1 mr-2">{txHash}</code>
                     <Button onClick={copyTxHash} size="sm" variant="outline">
                       <Copy className="h-4 w-4" />
                     </Button>
@@ -245,7 +241,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
                       ))}
                     </CardContent>
                   </Card>
-
                   {/* Sharing Interface */}
                   {selectedCredentials.length > 0 && (
                     <Card className="bg-slate-800/50 border-slate-700">

@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -88,7 +87,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
       </div>
-
       <div className="relative z-10 container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center mb-8">
@@ -100,7 +98,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
             Manage Credentials
           </h1>
         </div>
-
         {/* Privacy Badge */}
         <div className="flex justify-center mb-6">
           <div className="bg-sky-900/30 text-sky-400 border border-sky-500/30 px-4 py-2 rounded-full flex items-center">
@@ -108,7 +105,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
             Full control over your credential lifecycle
           </div>
         </div>
-
         <div className="max-w-4xl mx-auto">
           {credentials.length === 0 ? (
             <Card className="bg-slate-800/50 border-slate-700">
@@ -188,7 +184,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
                   </div>
                 </CardContent>
               </Card>
-
               {actionResult === "success" ? (
                 <Card className="bg-slate-800/50 border-slate-700">
                   <CardHeader className="text-center">
@@ -235,7 +230,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
                       History
                     </TabsTrigger>
                   </TabsList>
-
                   <TabsContent value="manage" className="space-y-6 mt-6">
                     <Card className="bg-slate-800/50 border-slate-700">
                       <CardHeader>
@@ -373,7 +367,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
                       </CardContent>
                     </Card>
                   </TabsContent>
-
                   <TabsContent value="history" className="space-y-6 mt-6">
                     <Card className="bg-slate-800/50 border-slate-700">
                       <CardHeader>

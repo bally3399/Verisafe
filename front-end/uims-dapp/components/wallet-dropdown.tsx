@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
@@ -56,7 +55,6 @@ export default function WalletDropdown() {
           </div>
         </Button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent className="w-80 bg-slate-800 border-slate-600" align="end">
         <div className="p-4">
           <div className="flex items-center justify-between mb-3">
@@ -66,7 +64,6 @@ export default function WalletDropdown() {
             </div>
             <Badge className="bg-green-900/30 text-green-400 border-green-500/30">Connected</Badge>
           </div>
-
           <div className="space-y-3">
             <div>
               <div className="text-xs text-slate-400 mb-1">Wallet Address</div>
@@ -83,7 +80,6 @@ export default function WalletDropdown() {
                 </div>
               </div>
             </div>
-
             {balance && (
               <div>
                 <div className="text-xs text-slate-400 mb-1">Balance</div>
@@ -94,14 +90,11 @@ export default function WalletDropdown() {
             )}
           </div>
         </div>
-
         <DropdownMenuSeparator className="bg-slate-600" />
-
         <DropdownMenuItem onClick={openExplorer} className="text-slate-300 hover:bg-slate-700 cursor-pointer">
           <ExternalLink className="h-4 w-4 mr-2" />
           View on Explorer
         </DropdownMenuItem>
-
         <DropdownMenuItem onClick={copyAddress} className="text-slate-300 hover:bg-slate-700 cursor-pointer">
           {copied ? (
             <>
@@ -115,9 +108,7 @@ export default function WalletDropdown() {
             </>
           )}
         </DropdownMenuItem>
-
         <DropdownMenuSeparator className="bg-slate-600" />
-
         <DropdownMenuItem onClick={disconnectWallet} className="text-red-400 hover:bg-red-500/10 cursor-pointer">
           <LogOut className="h-4 w-4 mr-2" />
           Disconnect Wallet
