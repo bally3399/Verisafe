@@ -57,28 +57,29 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         throw new Error(`Wallet ${name} not found. Please install it.`)
       }
 
-      let api
-      try {
-        api = await window.cardano[walletKey].enable()
-      } catch (enableError: any) {
-        // Specific handling for "account changed" or similar errors
-        if (enableError.message && enableError.message.includes("account changed")) {
-          console.warn("Wallet already enabled but account changed. Attempting to re-fetch data.")
-          // If 'enable' throws 'account changed', it means the wallet is already connected
-          // and the API object should be accessible directly.
-          api = window.cardano[walletKey] // Get the API directly
-          if (!api) {
-            throw new Error(`Could not get wallet API after 'account changed' error for ${name}.`)
-          }
-        } else {
-          throw enableError // Re-throw other errors
-        }
-      }
+      // Attempt to enable the wallet. This will prompt the user if not already enabled
+      // or if the account has changed and requires re-permission.
+      const api = await window.cardano[walletKey].enable()
 
+      // If enable() succeeds, fetch the data
       await fetchWalletData(api, name)
     } catch (err: any) {
       console.error("Failed to connect wallet:", err)
-      setError(err.message || "Failed to connect wallet. Please try again.")
+      let errorMessage = "Failed to connect wallet. Please try again."
+
+      if (err.message) {
+        if (err.message.includes("account changed")) {
+          errorMessage = `Wallet account changed. Please re-connect or switch back to the previously connected account in ${name}.`
+        } else if (err.message.includes("user rejected")) {
+          errorMessage = "Wallet connection rejected by user."
+        } else if (err.message.includes("not found")) {
+          errorMessage = `Wallet ${name} not found. Please install it.`
+        } else {
+          errorMessage = err.message
+        }
+      }
+
+      setError(errorMessage)
       setIsConnected(false)
       setAddress(null)
       setBalance(null)
