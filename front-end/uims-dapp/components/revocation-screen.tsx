@@ -18,7 +18,6 @@ import {
   Clock,
   Database,
 } from "lucide-react"
-
 interface Credential {
   id: string
   type: string
@@ -28,13 +27,11 @@ interface Credential {
   status: "active" | "expired" | "revoked"
   fields: { [key: string]: string }
 }
-
 interface RevocationScreenProps {
   onBack: () => void
   credentials: Credential[]
   setCredentials: (credentials: Credential[]) => void
 }
-
 export default function RevocationScreen({ onBack, credentials, setCredentials }: RevocationScreenProps) {
   const [activeTab, setActiveTab] = useState("manage")
   const [selectedCredential, setSelectedCredential] = useState<string | null>(null)
@@ -42,7 +39,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
   const [actionResult, setActionResult] = useState<"success" | "error" | null>(null)
   const [editingCredential, setEditingCredential] = useState<string | null>(null)
   const [editFormData, setEditFormData] = useState<{ [key: string]: string }>({})
-
   const handleRevoke = (credId: string) => {
     setSelectedCredential(credId)
     setIsProcessing(true)
@@ -53,7 +49,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
       setSelectedCredential(null)
     }, 2000)
   }
-
   const handleEdit = (credId: string) => {
     const credential = credentials.find((c) => c.id === credId)
     if (credential) {
@@ -61,7 +56,6 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
       setEditFormData(credential.fields)
     }
   }
-
   const handleSaveEdit = () => {
     setIsProcessing(true)
     setTimeout(() => {
@@ -74,14 +68,12 @@ export default function RevocationScreen({ onBack, credentials, setCredentials }
       setEditFormData({})
     }, 2000)
   }
-
   const resetAction = () => {
     setActionResult(null)
     setSelectedCredential(null)
     setEditingCredential(null)
     setEditFormData({})
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-teal-900">
       <div className="absolute inset-0 opacity-20">

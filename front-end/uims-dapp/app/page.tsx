@@ -23,10 +23,7 @@ import AuthenticationScreen from "@/components/authentication-screen"
 import CredentialSharingScreen from "@/components/credential-sharing-screen"
 import RevocationScreen from "@/components/revocation-screen"
 import QAScreen from "@/components/qa-screen"
-// CredentialCreationScreen was provided with the same content as CredentialSharingScreen,
-// so I'm using a placeholder for it to avoid duplication and potential issues.
-// You might want to provide a distinct implementation for CredentialCreationScreen.
-// import CredentialCreationScreen from "@/components/credential-creation-screen"
+import CredentialCreationScreen from "@/components/credential-creation-screen" // Using the provided component
 import WalletConnectionModal from "@/components/wallet-connection-modal"
 import WalletDropdown from "@/components/wallet-dropdown"
 import { Badge } from "@/components/ui/badge"
@@ -49,6 +46,7 @@ function VerisafeDashboardContent() {
   const [userCredentials, setUserCredentials] = useState<Credential[]>([])
   const [showWalletModal, setShowWalletModal] = useState(false)
   const [walletRequiredMessage, setWalletRequiredMessage] = useState("")
+  const [intendedScreen, setIntendedScreen] = useState<string | null>(null) // New state for intended screen
   const { isConnected } = useWallet()
 
   // Function to add new credential when enrollment is completed
@@ -61,6 +59,7 @@ function VerisafeDashboardContent() {
   const handleNavigateWithWalletCheck = (screen: string, requiresWallet = false) => {
     if (requiresWallet && !isConnected) {
       setWalletRequiredMessage("Please connect your Cardano wallet to access this feature.")
+      setIntendedScreen(screen) // Store the intended screen
       setShowWalletModal(true)
       return
     }
@@ -74,11 +73,21 @@ function VerisafeDashboardContent() {
       setWalletRequiredMessage(
         "A Cardano wallet connection is required to create your identity. Please connect your wallet to continue.",
       )
+      setIntendedScreen("enrollment") // Store the intended screen
       // Do not change screen here, let the modal handle the prompt
       return
     }
     // If wallet is connected, proceed to enrollment screen
     setCurrentScreen("enrollment")
+  }
+
+  const handleWalletConnectionSuccess = () => {
+    setWalletRequiredMessage("")
+    setShowWalletModal(false) // Close modal on success
+    if (intendedScreen) {
+      setCurrentScreen(intendedScreen) // Navigate to the intended screen
+      setIntendedScreen(null) // Clear the intended screen
+    }
   }
 
   const renderScreen = () => {
@@ -92,18 +101,9 @@ function VerisafeDashboardContent() {
           />
         )
       case "credential-creation":
-        // Placeholder for CredentialCreationScreen as its content was identical to CredentialSharingScreen
-        return (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white p-4">
-            <h2 className="text-3xl font-bold mb-4">Credential Creation Screen (Placeholder)</h2>
-            <p className="text-slate-400 text-center mb-6">
-              This is a placeholder for the Credential Creation Screen.
-              <br />
-              Wallet connection status: {isConnected ? "Connected" : "Disconnected"}
-            </p>
-            <Button onClick={() => setCurrentScreen("dashboard")}>Back to Dashboard</Button>
-          </div>
-        )
+        // Note: The provided CredentialCreationScreen component has the same content as CredentialSharingScreen.
+        // If its functionality is meant to be different, please provide a distinct implementation.
+        return <CredentialCreationScreen onBack={() => setCurrentScreen("dashboard")} credentials={userCredentials} />
       case "authentication":
         return (
           <AuthenticationScreen
@@ -692,14 +692,9 @@ function VerisafeDashboardContent() {
         onClose={() => {
           setShowWalletModal(false)
           setWalletRequiredMessage("")
+          setIntendedScreen(null) // Clear intended screen if modal is closed without connecting
         }}
-        onSuccess={() => {
-          setWalletRequiredMessage("")
-          setShowWalletModal(false) // Close modal on success
-          // If a specific screen was intended, navigate to it after successful connection
-          // This logic would need to be more sophisticated if you want to resume specific actions
-          // For now, it just closes the modal.
-        }}
+        onSuccess={handleWalletConnectionSuccess}
       />
     </>
   )

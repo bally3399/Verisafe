@@ -11,11 +11,9 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { ChevronDown, Copy, ExternalLink, LogOut, Wallet, Check } from "lucide-react"
 import { useWallet } from "@/hooks/useWallet"
-
 export default function WalletDropdown() {
   const { isConnected, address, balance, walletName, disconnectWallet } = useWallet()
   const [copied, setCopied] = useState(false)
-
   const copyAddress = async () => {
     if (address) {
       await navigator.clipboard.writeText(address)
@@ -23,18 +21,15 @@ export default function WalletDropdown() {
       setTimeout(() => setCopied(false), 2000)
     }
   }
-
   const openExplorer = () => {
     if (address) {
       // Open Cardano explorer - using CardanoScan as example
       window.open(`https://cardanoscan.io/address/${address}`, "_blank")
     }
   }
-
   if (!isConnected) {
     return null
   }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

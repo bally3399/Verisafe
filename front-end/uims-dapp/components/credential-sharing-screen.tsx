@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Shield, Eye, Users, CheckCircle, AlertTriangle, Copy, ExternalLink } from "lucide-react"
-
 interface Credential {
   id: string
   type: string
@@ -17,12 +16,10 @@ interface Credential {
   status: "active" | "expired" | "revoked"
   fields: { [key: string]: string }
 }
-
 interface CredentialSharingScreenProps {
   onBack: () => void
   credentials: Credential[]
 }
-
 export default function CredentialSharingScreen({ onBack, credentials }: CredentialSharingScreenProps) {
   const [selectedCredentials, setSelectedCredentials] = useState<string[]>([])
   const [selectedFields, setSelectedFields] = useState<{ [key: string]: string[] }>({})
@@ -30,7 +27,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
   const [isSharing, setIsSharing] = useState(false)
   const [shareResult, setShareResult] = useState<"success" | "error" | null>(null)
   const [txHash, setTxHash] = useState("")
-
   const handleCredentialSelect = (credId: string) => {
     setSelectedCredentials((prev) => (prev.includes(credId) ? prev.filter((id) => id !== credId) : [...prev, credId]))
     if (!selectedCredentials.includes(credId)) {
@@ -43,7 +39,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
       })
     }
   }
-
   const handleFieldSelect = (credId: string, field: string) => {
     setSelectedFields((prev) => ({
       ...prev,
@@ -52,7 +47,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
         : [...(prev[credId] || []), field],
     }))
   }
-
   const handleShare = () => {
     setIsSharing(true)
     setTimeout(() => {
@@ -64,7 +58,6 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
       setIsSharing(false)
     }, 3000)
   }
-
   const resetShare = () => {
     setShareResult(null)
     setTxHash("")
@@ -72,11 +65,9 @@ export default function CredentialSharingScreen({ onBack, credentials }: Credent
     setSelectedFields({})
     setRecipientAddress("")
   }
-
   const copyTxHash = () => {
     navigator.clipboard.writeText(txHash)
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-teal-900">
       <div className="absolute inset-0 opacity-20">

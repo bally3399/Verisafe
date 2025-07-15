@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useWallet } from "@/hooks/useWallet"
-
 interface Credential {
   id: string
   type: string
@@ -18,16 +17,13 @@ interface Credential {
   status: "active" | "expired" | "revoked"
   fields: { [key: string]: string }
 }
-
 interface EnrollmentScreenProps {
   onBack: () => void
   onComplete: (credential: Credential) => void
   onWalletRequired: () => void
 }
-
 type BiometricStatus = "idle" | "scanning" | "success" | "error"
 type WalrusStatus = "idle" | "encrypting" | "uploading" | "storing" | "success"
-
 // Country codes data
 const countryCodes = [
   { code: "+1", country: "United States", flag: "🇺🇸" },
@@ -51,7 +47,6 @@ const countryCodes = [
   { code: "+46", country: "Sweden", flag: "🇸🇪" },
   { code: "+47", country: "Norway", flag: "🇳🇴" },
 ]
-
 // Nationalities data
 const nationalities = [
   "Afghan",
@@ -245,10 +240,8 @@ const nationalities = [
   "Zambian",
   "Zimbabwean",
 ]
-
 export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired }: EnrollmentScreenProps) {
   const { isConnected } = useWallet()
-
   /* ─────────────────────────── STATE ────────────────────────── */
   const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
@@ -267,7 +260,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
   const [consent, setConsent] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [walrusId, setWalrusId] = useState("")
-
   /* ─────────────────────── VALIDATION + HELPERS ─────────────────────── */
   const validateForm = () => {
     const errors: Record<string, string> = {}
@@ -282,12 +274,10 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
     setFormErrors(errors)
     return Object.keys(errors).length === 0
   }
-
   const nextStep = () => {
     if (step === 1 && !validateForm()) return
     setStep((prev) => Math.min(prev + 1, 4))
   }
-
   /* ────────────────────────── BIOMETRIC ───────────────────────── */
   const startScan = () => {
     setBiometric("scanning")
@@ -296,7 +286,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
       setBiometric(ok ? "success" : "error")
     }, 3000)
   }
-
   /* ────────────────────────── WALRUS FLOW ─────────────────────── */
   const uploadWalrus = () => {
     // Check wallet connection before proceeding
@@ -339,7 +328,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
       }, 2000)
     }, 5000)
   }
-
   /* ─────────────────────────── RENDER ─────────────────────────── */
   const progress = (step / 4) * 100
   return (
@@ -729,7 +717,6 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
     </div>
   )
 }
-
 /* ────────────────────────── HELPERS ───────────────────────── */
 function StatusLine({ active, label }: { active: boolean; label: string }) {
   return (

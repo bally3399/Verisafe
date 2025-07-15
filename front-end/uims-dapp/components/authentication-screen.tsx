@@ -7,12 +7,10 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Fingerprint, CheckCircle, AlertCircle, Loader2, Lock, Eye, EyeOff, Database } from "lucide-react"
-
 interface AuthenticationScreenProps {
   onBack: () => void
   onAuthenticated: () => void
 }
-
 export default function AuthenticationScreen({ onBack, onAuthenticated }: AuthenticationScreenProps) {
   const [authMethod, setAuthMethod] = useState("biometric")
   const [pin, setPin] = useState("")
@@ -20,7 +18,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
   const [biometricStatus, setBiometricStatus] = useState<"idle" | "scanning" | "success" | "error">("idle")
   const [isAuthenticating, setIsAuthenticating] = useState(false)
   const [authResult, setAuthResult] = useState<"success" | "failure" | null>(null)
-
   const handleBiometricAuth = () => {
     setBiometricStatus("scanning")
     setIsAuthenticating(true)
@@ -34,7 +31,6 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
       }
     }, 3000)
   }
-
   const handlePinAuth = () => {
     if (pin.length !== 6) return
     setIsAuthenticating(true)
@@ -47,13 +43,11 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
       }
     }, 2000)
   }
-
   const resetAuth = () => {
     setBiometricStatus("idle")
     setAuthResult(null)
     setPin("")
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-teal-900 relative overflow-hidden">
       {/* Same Enhanced Background as Landing Page */}
@@ -360,4 +354,3 @@ export default function AuthenticationScreen({ onBack, onAuthenticated }: Authen
     </div>
   )
 }
-  

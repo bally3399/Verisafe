@@ -5,15 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Search, HelpCircle, ChevronDown, ChevronUp, MessageCircle, Mail } from "lucide-react"
-
 interface QAScreenProps {
   onBack: () => void
 }
-
 export default function QAScreen({ onBack }: QAScreenProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null)
-
   const faqs = [
     {
       id: 1,
@@ -72,20 +69,16 @@ export default function QAScreen({ onBack }: QAScreenProps) {
         "Your credentials are tied to your Cardano wallet address. If you lose access to your wallet, you'll need to use your wallet's recovery phrase to restore access. We recommend keeping secure backups of your wallet recovery information.",
     },
   ]
-
   const categories = [...new Set(faqs.map((faq) => faq.category))]
-
   const filteredFaqs = faqs.filter(
     (faq) =>
       faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchQuery.toLowerCase()) ||
       faq.category.toLowerCase().includes(searchQuery.toLowerCase()),
   )
-
   const toggleFaq = (id: number) => {
     setExpandedFaq(expandedFaq === id ? null : id)
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-teal-900 relative">
       {/* Background Pattern */}
