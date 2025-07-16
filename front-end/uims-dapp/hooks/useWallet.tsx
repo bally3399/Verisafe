@@ -250,10 +250,7 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
       // Cleanup function for the listener
       return () => {
-        // CIP-30 does not define a standard way to remove specific listeners.
-        // In practice, re-registering might overwrite, or relying on component unmount.
-        // If a wallet specific API provides a remove method, it should be used here.
-        // For now, we acknowledge this limitation.
+        
       }
     }
   }, [walletApi, currentWalletKey, disconnectWallet, walletName, setError])

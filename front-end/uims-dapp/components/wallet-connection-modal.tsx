@@ -467,9 +467,9 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
           </DialogDescription>
           <div className="bg-amber-900/20 border border-amber-500/30 text-amber-300 p-2 rounded-md text-sm flex items-center space-x-2 mt-2">
             <AlertCircle className="h-4 w-4" />
-            <span>
+            {/* <span>
               (Note: In v0 preview, this simulates the flow. For real connection, ensure wallet is installed locally.)
-            </span>
+            </span> */}
           </div>
         </DialogHeader>
         <div className="grid gap-4 py-4">
