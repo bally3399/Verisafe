@@ -358,9 +358,10 @@ import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Wallet, AlertCircle, ExternalLink, Loader2, XCircle, CheckCircle } from "lucide-react"
+import { Wallet, ExternalLink, Loader2, XCircle, CheckCircle } from "lucide-react"
 import { useWallet } from "@/hooks/useWallet"
-import Image from "next/image"
+// Removed Image import as we're using span for emojis
+// import Image from "next/image"
 
 interface WalletConnectionModalProps {
   isOpen: boolean
@@ -371,7 +372,7 @@ interface WalletConnectionModalProps {
 interface WalletOption {
   id: string
   name: string
-  icon: string
+  icon: string // This will now hold the emoji string
   description: string
   installUrl: string
   cardanoKey: string // Key to check in window.cardano
@@ -381,7 +382,7 @@ const walletOptions: WalletOption[] = [
   {
     id: "nami",
     name: "Nami",
-    icon: "🦎", // Replace with actual Nami icon
+    icon: "🦎", // Using emoji directly
     description: "Light wallet for Cardano",
     installUrl: "https://namiwallet.io/",
     cardanoKey: "nami",
@@ -389,7 +390,7 @@ const walletOptions: WalletOption[] = [
   {
     id: "eternl",
     name: "Eternl",
-    icon: "♾️", // Replace with actual Eternl icon
+    icon: "♾️", // Using emoji directly
     description: "Feature-rich Cardano wallet",
     installUrl: "https://eternl.io/",
     cardanoKey: "eternl",
@@ -397,7 +398,7 @@ const walletOptions: WalletOption[] = [
   {
     id: "flint",
     name: "Flint",
-    icon: "🔥", // Replace with actual Flint icon
+    icon: "🔥", // Using emoji directly
     description: "Simple and secure wallet",
     installUrl: "https://flintwallet.io/",
     cardanoKey: "flint",
@@ -405,7 +406,7 @@ const walletOptions: WalletOption[] = [
   {
     id: "typhon",
     name: "Typhon",
-    icon: "🌊", // Replace with actual Typhon icon
+    icon: "🌊", // Using emoji directly
     description: "Advanced Cardano wallet",
     installUrl: "https://typhonwallet.io/",
     cardanoKey: "typhon",
@@ -415,7 +416,7 @@ const walletOptions: WalletOption[] = [
 export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: WalletConnectionModalProps) {
   const [selectedWallet, setSelectedWallet] = useState<WalletOption | null>(null)
   const [loading, setLoading] = useState(false)
-  const [connectionError, setConnectionError] = useState<string | null>(null) // Renamed to avoid conflict with useWallet's error
+  const [connectionError, setConnectionError] = useState<string | null>(null)
   const { connectWallet, isConnected, walletName } = useWallet()
 
   useEffect(() => {
@@ -428,10 +429,9 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
 
   useEffect(() => {
     if (isOpen && isConnected && walletName === selectedWallet?.name) {
-      
       setTimeout(() => {
         onSuccess()
-      }, 1000) 
+      }, 1000)
     }
   }, [isOpen, isConnected, walletName, selectedWallet, onSuccess])
 
@@ -465,12 +465,7 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
           <DialogDescription className="text-slate-400">
             Connect your Cardano wallet to securely manage your identity credentials.
           </DialogDescription>
-          <div className="bg-amber-900/20 border border-amber-500/30 text-amber-300 p-2 rounded-md text-sm flex items-center space-x-2 mt-2">
-            <AlertCircle className="h-4 w-4" />
-            {/* <span>
-              (Note: In v0 preview, this simulates the flow. For real connection, ensure wallet is installed locally.)
-            </span> */}
-          </div>
+          {/* Removed the v0 preview note as requested */}
         </DialogHeader>
         <div className="grid gap-4 py-4">
           {connectionError && (
@@ -481,7 +476,7 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
           )}
           {isConnected && walletName === selectedWallet?.name && !loading ? (
             <div className="bg-green-900/20 border border-green-500/30 text-green-300 p-3 rounded-md flex items-center space-x-2">
-              <CheckCircle className="h-5 w-5" />
+              <CheckCircle className="h-5 w-5 mr-2" />
               <span>{walletName} wallet connected successfully!</span>
             </div>
           ) : (
@@ -495,13 +490,8 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
                     onClick={() => setSelectedWallet(wallet)}
                   >
                     <CardContent className="flex flex-col items-center justify-center p-4 text-center">
-                      <Image
-                        src={wallet.icon}
-                        alt={wallet.name}
-                        width={40}
-                        height={40}
-                        className="mb-2"
-                      />
+                      {/* Render emoji directly in a span */}
+                      <span className="text-4xl mb-2">{wallet.icon}</span>
                       <span className="font-medium text-slate-200">{wallet.name}</span>
                       <p className="text-xs text-slate-400">{wallet.description}</p>
                     </CardContent>
