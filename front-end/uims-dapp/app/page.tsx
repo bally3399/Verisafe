@@ -713,21 +713,7 @@
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import {
-  Shield,
-  Fingerprint,
-  Eye,
-  Lock,
-  ArrowRight,
-  Database,
-  Layers,
-  Menu,
-  X,
-  Wallet,
-  AlertCircle,
-  HelpCircle,
-  Plus,
-} from "lucide-react"
+import { Shield, Fingerprint, Eye, Lock, ArrowRight, Database, Layers, Menu, X, Wallet, AlertCircle, HelpCircle, Plus } from 'lucide-react'
 import EnrollmentScreen from "@/components/enrollment-screen"
 import AuthenticationScreen from "@/components/authentication-screen"
 import CredentialSharingScreen from "@/components/credential-sharing-screen"
@@ -737,7 +723,9 @@ import CredentialCreationScreen from "@/components/credential-creation-screen"
 import WalletConnectionModal from "@/components/wallet-connection-modal"
 import WalletDropdown from "@/components/wallet-dropdown"
 import { Badge } from "@/components/ui/badge"
-import { WalletProvider, useWallet } from "@/hooks/useWallet"
+import { useWallet } from "@/hooks/useWallet"
+// Remove the import for the redundant WalletProvider
+// import WalletProvider from "@/providers/WalletProvider"
 
 interface Credential {
   id: string
@@ -749,7 +737,8 @@ interface Credential {
   fields: { [key: string]: string }
 }
 
-function VerisafeDashboardContent() {
+// Remove the outer VerisafeDashboard function and directly export VerisafeDashboardContent
+export default function VerisafeDashboardContent() {
   const [currentScreen, setCurrentScreen] = useState("dashboard")
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -1470,12 +1459,3 @@ function VerisafeDashboardContent() {
     </>
   )
 }
-
-export default function VerisafeDashboard() {
-  return (
-    <WalletProvider>
-      <VerisafeDashboardContent />
-    </WalletProvider>
-  )
-}
-

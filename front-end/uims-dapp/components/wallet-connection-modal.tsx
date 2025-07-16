@@ -428,10 +428,10 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
 
   useEffect(() => {
     if (isOpen && isConnected && walletName === selectedWallet?.name) {
-      // Only close if the currently connected wallet matches the one selected in the modal
+      
       setTimeout(() => {
         onSuccess()
-      }, 1000) // Give a brief moment for the user to see the success message
+      }, 1000) 
     }
   }, [isOpen, isConnected, walletName, selectedWallet, onSuccess])
 
@@ -496,7 +496,7 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
                   >
                     <CardContent className="flex flex-col items-center justify-center p-4 text-center">
                       <Image
-                        src={wallet.icon || "/placeholder.svg"}
+                        src={wallet.icon}
                         alt={wallet.name}
                         width={40}
                         height={40}
