@@ -464,7 +464,6 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
           <DialogDescription className="text-slate-400">
             Connect your Cardano wallet to securely manage your identity credentials.
           </DialogDescription>
-          {/* Removed the v0 preview note as requested */}
         </DialogHeader>
         <div className="grid gap-4 py-4">
           {connectionError && (

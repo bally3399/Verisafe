@@ -183,15 +183,15 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       setAddress(null)
       setBalance(null)
 
-      if (SIMULATE_V0_PREVIEW) {
-        // This block will not run if SIMULATE_V0_PREVIEW is false
-        console.log(`Simulating connection to ${walletKey} wallet for v0 preview...`)
-        setIsConnected(true)
-        setWalletName(walletKey)
-        setAddress(`addr1q9x...${Math.random().toString(36).substring(2, 6)}`) // Dummy address
-        setBalance(Math.floor(Math.random() * 1000) + 50) // Dummy balance
-        return // Exit early after simulation
-      }
+      // if (SIMULATE_V0_PREVIEW) {
+      //   // This block will not run if SIMULATE_V0_PREVIEW is false
+      //   console.log(`Simulating connection to ${walletKey} wallet for v0 preview...`)
+      //   setIsConnected(true)
+      //   setWalletName(walletKey)
+      //   setAddress(`addr1q9x...${Math.random().toString(36).substring(2, 6)}`) // Dummy address
+      //   setBalance(Math.floor(Math.random() * 1000) + 50) // Dummy balance
+      //   return // Exit early after simulation
+      // }
 
       // Actual wallet connection logic for local/deployed environments
       if (typeof window === "undefined" || !window.cardano || !window.cardano[walletKey]) {
