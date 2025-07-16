@@ -360,8 +360,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Wallet, ExternalLink, Loader2, XCircle, CheckCircle } from "lucide-react"
 import { useWallet } from "@/hooks/useWallet"
-// Removed Image import as we're using span for emojis
-// import Image from "next/image"
+
 
 interface WalletConnectionModalProps {
   isOpen: boolean
@@ -533,3 +532,4 @@ export default function WalletConnectionModal({ isOpen, onClose, onSuccess }: Wa
     </Dialog>
   )
 }
+
