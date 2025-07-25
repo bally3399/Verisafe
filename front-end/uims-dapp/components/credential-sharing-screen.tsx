@@ -18,9 +18,7 @@ import {
   Copy,
   ExternalLink
 } from "lucide-react"
-// @ts-ignore
 import QRCode from "react-qr-code"
-// @ts-ignore
 import jsPDF from "jspdf"
 
 interface Credential {
