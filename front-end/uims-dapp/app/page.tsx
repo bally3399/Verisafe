@@ -2,7 +2,21 @@
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Shield, Fingerprint, Eye, Lock, ArrowRight, Database, Layers, Menu, X, Wallet, AlertCircle, HelpCircle, Plus } from 'lucide-react'
+import {
+  Shield,
+  Fingerprint,
+  Eye,
+  Lock,
+  ArrowRight,
+  Database,
+  Layers,
+  Menu,
+  X,
+  Wallet,
+  AlertCircle,
+  HelpCircle,
+  Plus,
+} from "lucide-react"
 import EnrollmentScreen from "@/components/enrollment-screen"
 import AuthenticationScreen from "@/components/authentication-screen"
 import CredentialSharingScreen from "@/components/credential-sharing-screen"
@@ -88,6 +102,11 @@ export default function VerisafeDashboardContent() {
         )
       case "credential-creation":
         return (
+          <CredentialCreationScreen
+            onBack={() => setCurrentScreen("dashboard")}
+            credentials={userCredentials}
+            onCredentialCreated={handleEnrollmentComplete} // Added this prop
+          />
             <CredentialCreationScreen
                 onBack={() => setCurrentScreen("dashboard")}
                 credentials={userCredentials}
@@ -721,6 +740,7 @@ export default function VerisafeDashboardContent() {
         )
     }
   }
+
   return (
       <>
         {renderScreen()}
