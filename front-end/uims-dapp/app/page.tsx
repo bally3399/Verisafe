@@ -363,7 +363,7 @@ export default function VerisafeDashboardContent() {
                               <Shield className="h-8 w-8 text-white group-hover:animate-pulse" />
                             </div>
                             <h3 className="text-lg font-bold text-slate-100 mb-2">Create New Identity</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <p className="text-slate-100 text-sm leading-relaxed">
                               Secure biometric enrollment with Walrus storage
                             </p>
                           </div>
@@ -380,8 +380,8 @@ export default function VerisafeDashboardContent() {
                             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-sky-500 to-sky-600 rounded-full flex items-center justify-center mb-4 shadow-lg shadow-sky-500/25 group-hover:scale-110 transition-transform duration-300">
                               <Plus className="h-8 w-8 text-white group-hover:animate-pulse" />
                             </div>
-                            <h3 className="text-lg font-bold text-slate-100 mb-2">Create Credentials</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <h3 className="text-lg font-bold text-slate-100 mb-2">Add Credentials</h3>
+                            <p className="text-slate-100 text-sm leading-relaxed">
                               Custom verifiable credentials for any purpose
                             </p>
                           </div>
@@ -399,7 +399,7 @@ export default function VerisafeDashboardContent() {
                               <Eye className="h-8 w-8 text-white group-hover:animate-pulse" />
                             </div>
                             <h3 className="text-lg font-bold text-slate-100 mb-2">Share Credentials</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <p className="text-slate-100 text-sm leading-relaxed">
                               Selective disclosure with zero-knowledge proofs
                             </p>
                           </div>
@@ -417,7 +417,7 @@ export default function VerisafeDashboardContent() {
                               <Fingerprint className="h-8 w-8 text-white group-hover:animate-pulse" />
                             </div>
                             <h3 className="text-lg font-bold text-slate-100 mb-2">Authenticate</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <p className="text-slate-100 text-sm leading-relaxed">
                               Biometric authentication with blockchain verification
                             </p>
                           </div>
@@ -565,7 +565,7 @@ export default function VerisafeDashboardContent() {
                               className="w-full border-slate-600 text-slate-300 hover:bg-slate-700 justify-start"
                           >
                             <Plus className="h-4 w-4 mr-2" />
-                            Create Credential
+                            Add Credentials
                           </Button>
                           <Button
                               onClick={() => handleNavigateWithWalletCheck("sharing", true)}
