@@ -307,12 +307,13 @@ export default function EnrollmentScreen({ onBack, onComplete, onWalletRequired 
     setTimeout(() => {
       const ok = Math.random() > 0.2
       setBiometric(ok ? "success" : "error")
+      if (ok) handleBiometricCapture()
     }, 3000)
   }
 
   const handleBiometricCapture = () => {
     // Simulate biometric capture
-    alert("Biometric data captured successfully!")
+    // alert("Biometric data captured successfully!")
     setBiometricCaptured(true)
   }
 
