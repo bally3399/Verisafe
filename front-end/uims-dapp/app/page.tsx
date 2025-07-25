@@ -1,33 +1,20 @@
 // "use client"
-
 // import { useState } from "react"
 // import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 // import { Button } from "@/components/ui/button"
-// import {
-//   Shield,
-//   Fingerprint,
-//   Eye,
-//   Lock,
-//   ArrowRight,
-//   Database,
-//   Layers,
-//   Menu,
-//   X,
-//   Wallet,
-//   AlertCircle,
-//   HelpCircle,
-//   Plus,
-// } from "lucide-react"
+// import { Shield, Fingerprint, Eye, Lock, ArrowRight, Database, Layers, Menu, X, Wallet, AlertCircle, HelpCircle, Plus } from 'lucide-react'
 // import EnrollmentScreen from "@/components/enrollment-screen"
 // import AuthenticationScreen from "@/components/authentication-screen"
 // import CredentialSharingScreen from "@/components/credential-sharing-screen"
 // import RevocationScreen from "@/components/revocation-screen"
 // import QAScreen from "@/components/qa-screen"
-// import CredentialCreationScreen from "@/components/credential-creation-screen" // Using the provided component
+// import CredentialCreationScreen from "@/components/credential-creation-screen"
 // import WalletConnectionModal from "@/components/wallet-connection-modal"
 // import WalletDropdown from "@/components/wallet-dropdown"
 // import { Badge } from "@/components/ui/badge"
-// import { WalletProvider, useWallet } from "@/hooks/useWallet"
+// import { useWallet } from "@/hooks/useWallet"
+// // Remove the import for the redundant WalletProvider
+// // import WalletProvider from "@/providers/WalletProvider"
 
 // interface Credential {
 //   id: string
@@ -39,7 +26,8 @@
 //   fields: { [key: string]: string }
 // }
 
-// function VerisafeDashboardContent() {
+// // Remove the outer VerisafeDashboard function and directly export VerisafeDashboardContent
+// export default function VerisafeDashboardContent() {
 //   const [currentScreen, setCurrentScreen] = useState("dashboard")
 //   const [isAuthenticated, setIsAuthenticated] = useState(false)
 //   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -101,9 +89,13 @@
 //           />
 //         )
 //       case "credential-creation":
-//         // Note: The provided CredentialCreationScreen component has the same content as CredentialSharingScreen.
-//         // If its functionality is meant to be different, please provide a distinct implementation.
-//         return <CredentialCreationScreen onBack={() => setCurrentScreen("dashboard")} credentials={userCredentials} />
+//         return (
+//           <CredentialCreationScreen
+//             onBack={() => setCurrentScreen("dashboard")}
+//             credentials={userCredentials}
+//             onCredentialCreated={handleEnrollmentComplete}
+//           />
+//         )
 //       case "authentication":
 //         return (
 //           <AuthenticationScreen
@@ -662,24 +654,81 @@
 //               </div>
 //             </div>
 //             {/* Custom CSS for additional animations */}
-//             <style jsx>{`@keyframes float {
-//   0%   { transform: translateY(0); }
-//   50%  { transform: translateY(-10px); }
-//   100% { transform: translateY(0); }}
-// @keyframes scan {
-//   0%   { top: 0%;   opacity: 0; }
-//   50%  { opacity: 1; }
-//   100% { top: 100%; opacity: 0; }}
-// @keyframes gradient-x {
-//   0%   { background-size: 200% 200%; background-position: left center; }
-//   50%  { background-size: 200% 200%; background-position: right center; }
-//   100% { background-size: 200% 200%; background-position: left center; }}
-// @keyframes fade-in-up {
-//   0%   { opacity: 0; transform: translateY(20px); }
-//   100% { opacity: 1; transform: translateY(0); }}
-// @keyframes count-up {
-//   0%   { opacity: 0; transform: translateY(20px); }
-//   100% { opacity: 1; transform: translateY(0); }}.animate-float        { animation: float 6s ease-in-out infinite; }.animate-scan         { animation: scan 3s linear infinite; }.animate-gradient-x   { animation: gradient-x 4s ease infinite; }.animate-fade-in-up   { animation: fade-in-up 1s ease-out; }.animate-count-up     { animation: count-up 1s ease-out; }`}</style>
+//             <style jsx>{`
+//               @keyframes float {
+//                 0% {
+//                   transform: translateY(0);
+//                 }
+//                 50% {
+//                   transform: translateY(-10px);
+//                 }
+//                 100% {
+//                   transform: translateY(0);
+//                 }
+//               }
+//               @keyframes scan {
+//                 0% {
+//                   top: 0%;
+//                   opacity: 0;
+//                 }
+//                 50% {
+//                   opacity: 1;
+//                 }
+//                 100% {
+//                   top: 100%;
+//                   opacity: 0;
+//                 }
+//               }
+//               @keyframes gradient-x {
+//                 0% {
+//                   background-size: 200% 200%;
+//                   background-position: left center;
+//                 }
+//                 50% {
+//                   background-size: 200% 200%;
+//                   background-position: right center;
+//                 }
+//                 100% {
+//                   background-size: 200% 200%;
+//                   background-position: left center;
+//                 }
+//               }
+//               @keyframes fade-in-up {
+//                 0% {
+//                   opacity: 0;
+//                   transform: translateY(20px);
+//                 }
+//                 100% {
+//                   opacity: 1;
+//                   transform: translateY(0);
+//                 }
+//               }
+//               @keyframes count-up {
+//                 0% {
+//                   opacity: 0;
+//                   transform: translateY(20px);
+//                 }
+//                 100% {
+//                   opacity: 1;
+//                   transform: translateY(0);
+//                 }
+//               }
+//               .animate-float {
+//                 animation: float 6s ease-in-out infinite;
+//               }
+//               .animate-scan {
+//                 animation: scan 3s linear infinite;
+//               }
+//               .animate-gradient-x {
+//                 animation: gradient-x 4s ease infinite;
+//               }
+//               .animate-fade-in-up {
+//                 animation: fade-in-up 1s ease-out;
+//               }
+//               .animate-count-up {
+//                 animation: count-up 1s ease-out;
+//               }
+//             `}</style>
 //           </div>
 //         )
 //     }
@@ -700,20 +749,26 @@
 //   )
 // }
 
-// export default function VerisafeDashboard() {
-//   return (
-//     <WalletProvider>
-//       <VerisafeDashboardContent />
-//     </WalletProvider>
-//   )
-// }
-
 
 "use client"
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Shield, Fingerprint, Eye, Lock, ArrowRight, Database, Layers, Menu, X, Wallet, AlertCircle, HelpCircle, Plus } from 'lucide-react'
+import {
+  Shield,
+  Fingerprint,
+  Eye,
+  Lock,
+  ArrowRight,
+  Database,
+  Layers,
+  Menu,
+  X,
+  Wallet,
+  AlertCircle,
+  HelpCircle,
+  Plus,
+} from "lucide-react"
 import EnrollmentScreen from "@/components/enrollment-screen"
 import AuthenticationScreen from "@/components/authentication-screen"
 import CredentialSharingScreen from "@/components/credential-sharing-screen"
@@ -724,8 +779,6 @@ import WalletConnectionModal from "@/components/wallet-connection-modal"
 import WalletDropdown from "@/components/wallet-dropdown"
 import { Badge } from "@/components/ui/badge"
 import { useWallet } from "@/hooks/useWallet"
-// Remove the import for the redundant WalletProvider
-// import WalletProvider from "@/providers/WalletProvider"
 
 interface Credential {
   id: string
@@ -737,7 +790,6 @@ interface Credential {
   fields: { [key: string]: string }
 }
 
-// Remove the outer VerisafeDashboard function and directly export VerisafeDashboardContent
 export default function VerisafeDashboardContent() {
   const [currentScreen, setCurrentScreen] = useState("dashboard")
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -804,7 +856,7 @@ export default function VerisafeDashboardContent() {
           <CredentialCreationScreen
             onBack={() => setCurrentScreen("dashboard")}
             credentials={userCredentials}
-            onCredentialCreated={handleEnrollmentComplete}
+            onCredentialCreated={handleEnrollmentComplete} // Added this prop
           />
         )
       case "authentication":
@@ -1444,6 +1496,7 @@ export default function VerisafeDashboardContent() {
         )
     }
   }
+
   return (
     <>
       {renderScreen()}
